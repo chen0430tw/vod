@@ -1,0 +1,88 @@
+# ----- Python -----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ----- Virtual envs -----
+.venv/
+venv/
+env/
+
+# ----- IDE / editor -----
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ----- Temp / build -----
+*.tmp
+*.bak
+*.log
+build/
+dist/
+
+# ----- Model weights & checkpoints (commit code, not weights) -----
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.bin
+*.onnx
+checkpoints/
+**/checkpoints/
+
+# ----- Generated outputs (regeneratable) -----
+generated/
+**/generated/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.mp4
+*.wav
+
+# ----- Large / external assets -----
+external/
+*.npz
+*.npy
+*.h5
+*.hdf5
+
+# ----- Reports / runs -----
+tensorearch_reports/
+runs/
+wandb/
+mlruns/
+
+# ----- Private session records (NEVER commit) -----
+claude_session_*.md
+*_病历.md
+VOD_agent_postmortem.md
+.env
+.env.*
+secrets/
+*.key
+*.pem
+
+# ----- Path-mangled artefacts (legacy bug; clean up later) -----
+VODprototypecheckpoints*
+VODprototypegenerated*
+
+# ----- Result files (stale, reproducible) -----
+*_result.json
+*_result.txt
+*_validation_report.md
+
+# ----- Allow exceptions: Phase A interface drafts must be tracked -----
+!model_index.json
+!modular_model_index.json

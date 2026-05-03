@@ -1,0 +1,23 @@
+{
+  "_class_name": "VODModularPipeline",
+  "_diffusers_version": null,
+  "_comment": "DRAFT — Modular Diffusers (HF 2026/3) component manifest. Not loaded by any runtime. Reserved for future Phase C ModularPipelineBlocks wrapper. See docs/hf_modular_mapping.md for inputs / intermediate_outputs / expected_components contracts.",
+  "vod_substrate": [
+    "vod_minimal.native",
+    "NativeVOD",
+    {
+      "pretrained_model_name_or_path": "<placeholder>/vod-substrate-v1",
+      "subfolder": "vod",
+      "type_hint": ["vod_minimal.native", "NativeVOD"]
+    }
+  ],
+  "scheduler": [
+    "vod_minimal.diffusion",
+    "NoiseSchedule",
+    {
+      "pretrained_model_name_or_path": "<placeholder>/vod-substrate-v1",
+      "subfolder": "scheduler",
+      "type_hint": ["vod_minimal.diffusion", "NoiseSchedule"]
+    }
+  ]
+}
