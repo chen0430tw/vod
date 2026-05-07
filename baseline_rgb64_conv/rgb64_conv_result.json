@@ -1,0 +1,166 @@
+{
+  "date": "2026-05-07T07:50:56.556532",
+  "version": "real-image-smoke: v16-A-O+P+Q+R+S' on CIFAR-10 grayscale 32\u00d732",
+  "device": "cuda",
+  "train_args": {
+    "seed": 430,
+    "dataset": "cifar10",
+    "data_dir": "D:/VOD/data/real_images",
+    "data_cache_dir": null,
+    "image_size": 64,
+    "train_n": 1024,
+    "epochs": 1500,
+    "lr": 0.0001,
+    "weight_decay": 0.001,
+    "cosine_eta_floor": 0.1,
+    "ema_decay": 0.999,
+    "use_fixed_scaling": true,
+    "scale_fit_n": 512,
+    "zero_terminal_snr": true,
+    "w_weak": 0.0,
+    "use_field_lift": true,
+    "diffusion_steps": 200,
+    "time_dim": 64,
+    "hidden": 128,
+    "channels": 8,
+    "n_samples": 8,
+    "w_recon": 1.0,
+    "cpu": false,
+    "out": "generated/rgb64_conv",
+    "report_out": "prototype/rgb64_conv_result.json",
+    "md_out": "prototype/rgb64_conv_report.md",
+    "prediction": "v",
+    "lr_schedule": "cosine",
+    "amp": true,
+    "minibatch_size": 32,
+    "checkpoint_dir": "runs/rgb64_conv_ckpt",
+    "checkpoint_every": 200,
+    "resume": null,
+    "rss_every_ep": 25,
+    "gc_every_ep": 0,
+    "pin_dataset": false
+  },
+  "sampler": {
+    "type": "DDIM",
+    "prediction": "x_0",
+    "eta": 0.0,
+    "num_steps": 50,
+    "schedule_steps": 200
+  },
+  "latent_stats": {
+    "mean": 0.0,
+    "std": 1.0
+  },
+  "metrics": {
+    "per_source": {
+      "train_reference": {
+        "descriptor_mean": {
+          "amplitude": 0.48696923598740416,
+          "phase": -0.36860321927734774,
+          "frequency": 0.08466593424479166,
+          "compression": 0.09197351824743831,
+          "salience": 0.09404263460007556,
+          "snr": 9.80223386838215
+        },
+        "amplitude_range": 1.9921568632125854,
+        "entropy_mean": 5.071398906950027,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      "trained_sample": {
+        "descriptor_mean": {
+          "amplitude": 0.09404085867024041,
+          "phase": -0.8618777100885879,
+          "frequency": 0.3333333333333333,
+          "compression": 0.19479022355583747,
+          "salience": 0.024487603709962905,
+          "snr": 5.976389377244594
+        },
+        "amplitude_range": 0.7605645656585693,
+        "entropy_mean": 4.497066406654714,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      "untrained_sample": {
+        "descriptor_mean": {
+          "amplitude": 0.08623723756645063,
+          "phase": 1.196541248588994,
+          "frequency": 0.3333333333333333,
+          "compression": 0.1280832597594358,
+          "salience": 0.0790744378107783,
+          "snr": 0.04680249958528218
+        },
+        "amplitude_range": 0.4319051653146744,
+        "entropy_mean": 4.86962229799458,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      "random_noise_baseline": {
+        "descriptor_mean": {
+          "amplitude": 0.7887517787433895,
+          "phase": 0.3161336179543696,
+          "frequency": 0.3525288899739583,
+          "compression": 0.1788996334488715,
+          "salience": 0.8169928966551904,
+          "snr": 0.2549345190896133
+        },
+        "amplitude_range": 7.4536871910095215,
+        "entropy_mean": 4.585814756516449,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      "zero_baseline": {
+        "descriptor_mean": {
+          "amplitude": 0.042874450565918196,
+          "phase": -1.3727999748079829,
+          "frequency": 0.3333333333333333,
+          "compression": 0.7162089270041656,
+          "salience": 0.020886373085280262,
+          "snr": 0.7463515096628993
+        },
+        "amplitude_range": 0.09449039399623871,
+        "entropy_mean": 1.584962500721156,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      "gate0_recon": {
+        "descriptor_mean": {
+          "amplitude": 0.48661074296562407,
+          "phase": -0.3683265178445775,
+          "frequency": 0.08466593424479166,
+          "compression": 0.09052222717551996,
+          "salience": 0.09395093299484615,
+          "snr": 9.810085010563553
+        },
+        "amplitude_range": 1.999930739402771,
+        "entropy_mean": 5.079396822775862,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      }
+    },
+    "descriptor_distance_to_train": {
+      "train_reference": 0.0,
+      "trained_sample": 3.8874211446582203,
+      "untrained_sample": 9.891514948018509,
+      "random_noise_baseline": 9.607956385118408,
+      "zero_baseline": 9.147212348947262,
+      "gate0_recon": 0.007997510202681926
+    },
+    "stability": {
+      "per_seed_distances": {
+        "trained_seed_530": 5.3474053553120235,
+        "trained_seed_630": 3.060448520470719,
+        "trained_seed_730": 3.0831049074115837
+      },
+      "std_across_seeds": 1.0727815038310822
+    }
+  },
+  "verdict": "PASS",
+  "passes": {
+    "finite_ratio == 1.0": true,
+    "amplitude_range > 0.05": true,
+    "beats random_noise baseline": true,
+    "beats zero baseline": true,
+    "beats untrained_sample": true
+  }
+}

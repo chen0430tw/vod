@@ -1,8 +1,8 @@
-# VOD ↔ HF Modular Diffusers Mapping (Future Phase C Contract)
+# VOD ↔ HF Modular Diffusers Mapping (Future Phase 3 Contract)
 
 > Status: **draft contract, no runtime code**.
 > This file freezes the input/output shape of the future
-> `ModularPipelineBlocks` wrapper so that when Phase C arrives the
+> `ModularPipelineBlocks` wrapper so that when Phase 3 arrives the
 > wrap is mechanical (~50 LOC), not a redesign.
 >
 > Companion files:
@@ -152,18 +152,18 @@ out.image, out.video
 - `latent` shape is always 5-D `(B, T, H, W, C)`. Wrappers MUST NOT
   reshape to 4-D — this preserves type B claim.
 - All `expected_components` load via VOD's existing `from_pretrained`
-  (Phase A A3). No new serialization layer is introduced in Phase C.
+  (Phase 1 / 1A A3). No new serialization layer is introduced in Phase 3.
 
-## 5. Open items — defer to Phase C
+## 5. Open items — defer to Phase 3
 
 | Item | Why deferred |
 |---|---|
 | `VODConditioningBlock` (text / class / image conditioning) | VOD is unconditional today; conditioning hook intentionally not pre-baked (YAGNI) |
 | `_no_split_modules = ["UNetDenoiser"]` (group offload) | Only meaningful when VOD scales past current 524K toy size |
-| `_skip_layerwise_casting_patterns = (".*enc_.*", ".*dec_.*")` (fp8 fidelity) | Same — needs scale to matter; class-level placeholder fine for Phase A |
+| `_skip_layerwise_casting_patterns = (".*enc_.*", ".*dec_.*")` (fp8 fidelity) | Same — needs scale to matter; class-level placeholder fine for Phase 1 |
 | T-shape randomized training (substrate cost reduction) | Requires retraining; wait for unconditional sample fidelity to pass first |
 
-## 6. Out of scope (will NOT do, now or in Phase C)
+## 6. Out of scope (will NOT do, now or in Phase 3)
 
 - ❌ Wrap as classic `StableDiffusionPipeline` lookalike
 - ❌ Reshape 5-D substrate to 4-D image latent

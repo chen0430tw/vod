@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "vod"
+version = "0.1.0"
+description = "Substrate-shared multimodal diffusion research prototype"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [{ name = "chen0430tw" }]
+keywords = ["diffusion", "multimodal", "research", "substrate"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy",
+    "torch",
+    "safetensors",
+    "Pillow",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.urls]
+Homepage = "https://github.com/chen0430tw/vod"
+Documentation = "https://github.com/chen0430tw/vod/tree/main/docs"
+Repository = "https://github.com/chen0430tw/vod"
+
+# Map the legacy `vod_minimal` namespace from the prototype/ tree as
+# an installable package, so `pip install -e .` makes it importable
+# without sys.path hacks. The `vod` public package will be introduced
+# in Phase 2 with a compatibility shim — until then `vod_minimal`
+# remains the canonical import name.
+[tool.setuptools]
+package-dir = { "vod_minimal" = "prototype/vod_minimal" }
+
+[tool.setuptools.packages.find]
+where = ["prototype"]
+include = ["vod_minimal*"]
+
+[tool.pytest.ini_options]
+testpaths = ["prototype/tests"]
+pythonpath = ["prototype"]

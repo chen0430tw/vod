@@ -1,7 +1,7 @@
 {
   "_class_name": "NativeVODPipeline",
   "_diffusers_version": null,
-  "_comment": "DRAFT — not loaded by any runtime. Reserved for future Phase C wrapper. See docs/hf_modular_mapping.md for the contract.",
+  "_comment": "DRAFT — not loaded by any runtime. Reserved for future Phase 3 wrapper. See docs/hf_modular_mapping.md for the contract.",
   "vod": [
     "vod_minimal.native",
     "NativeVOD"

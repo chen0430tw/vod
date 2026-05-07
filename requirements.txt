@@ -1,0 +1,9 @@
+# VOD runtime + test dependencies.
+# Pinned only loosely; CUDA wheel selection is left to the user
+# (install torch with the appropriate index URL for your platform).
+
+numpy
+torch
+safetensors
+Pillow
+pytest

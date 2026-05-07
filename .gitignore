@@ -83,6 +83,20 @@ VODprototypegenerated*
 *_result.txt
 *_validation_report.md
 
-# ----- Allow exceptions: Phase A interface drafts must be tracked -----
+# ----- Allow exceptions: Phase 1 interface drafts must be tracked -----
 !model_index.json
 !modular_model_index.json
+
+# ----- Allow paper baseline artefacts (small PNG samples, JSON, MD) -----
+# Three published baselines are referenced in docs/paper_v16_baseline.md
+# and need to ship with the repo; their PNG samples are <100KB each.
+# Trained .pt checkpoints stay ignored — mirror on nano5.
+!baseline_v16/
+!baseline_v16/**
+!baseline_rgb64_conv/
+!baseline_rgb64_conv/**
+!baseline_rgb64_cond/
+!baseline_rgb64_cond/**
+baseline_v16/v16_ckpt.pt
+baseline_rgb64_conv/*.pt
+baseline_rgb64_cond/*.pt

@@ -39,9 +39,13 @@ without breaking changes.
 
 ## News
 
-- **2026-05-04** — Repository public. Phase A (HF/Diffusers shadow
+- **2026-05-05** — Phase 1 complete. Repo layout aligned to standard
+  open-source ML format: `pyproject.toml` + `requirements.txt`,
+  `scripts/sample.py` minimal CLI, 19 ablation entry points moved to
+  `scripts/ablations/`. 235/235 tests passing.
+- **2026-05-04** — Repository public. Phase 1 / 1A (HF/Diffusers shadow
   contract: serialization, `state_dict` key contract, output dataclass,
-  dtype audit) merged. 32/32 tests passing.
+  dtype audit) merged.
 - **2026-05-03** — Gate 0 passed (`L_recon=0.0285`, `L_clean_noop=0.0000`).
   DDPM training + DDIM sampling pipeline operational.
 
@@ -82,38 +86,73 @@ Full formulation: [`docs/vod_full_mathematical_formulation.md`](docs/vod_full_ma
 ```bash
 git clone https://github.com/chen0430tw/vod.git
 cd vod
-py -3.13 -m pip install torch numpy pillow safetensors pytest
+py -3.13 -m pip install -e .
 ```
 
-No `huggingface_hub` or `diffusers` dependency required — VOD implements
-HF-compatible serialization (`save_pretrained`, `from_pretrained`,
-`config.json`, `model.safetensors`) standalone. See
-[Roadmap](#roadmap) for migration plan.
+This installs the `vod_minimal` package and pulls in `torch`, `numpy`,
+`pillow`, `safetensors` from `pyproject.toml`. No `huggingface_hub` or
+`diffusers` dependency required — VOD implements HF-compatible
+serialization (`save_pretrained`, `from_pretrained`, `config.json`,
+`model.safetensors`) standalone. See [Roadmap](#roadmap) for the
+migration plan.
+
+> **Status reminder.** VOD is currently a research prototype.
+> Gate 0 visible output is passed. **Unconditional sample fidelity is
+> still the active quality target** — `scripts/sample.py` defaults to
+> a Gate 0 / Chladni round-trip demo, not text-to-image.
 
 ---
 
 ## Quickstart
 
-### Run the test suite
-
 ```bash
-cd prototype
-py -3.13 -m pytest tests/ -v
+# 1. Run the test suite (235 tests, ~25s on CPU)
+py -3.13 -m pytest prototype/tests -q
+
+# 2. Round-trip sampling demo (3 PNGs per sample: orig / recon / pipeline)
+py -3.13 scripts/sample.py --out generated/sample --samples 4 --seed 430
+# If no checkpoint is supplied, the model is random-initialised and
+# the run prints an UNTRAINED warning — outputs are a wiring sanity
+# check, not a quality demo.
+
+# 3. (Optional) train a tiny model first, then sample with checkpoint
+py -3.13 scripts/ablations/run_gate0_verify.py --epochs 400
+py -3.13 scripts/sample.py --checkpoint <saved_dir> --out generated/sample
 ```
 
-Expected: 32 tests pass.
+### Save / load (HF-compatible layout)
 
-### Train + sample (toy)
+```python
+from vod_minimal.native import NativeVOD, NativeVODConfig
+
+model = NativeVOD(NativeVODConfig(channels=4, hidden=32))
+model.save_pretrained("./my_vod")
+# writes ./my_vod/config.json + ./my_vod/model.safetensors
+
+reloaded = NativeVOD.from_pretrained("./my_vod")
+```
+
+### Selective decoding
+
+```python
+out = model(noisy_views)           # NativeVODOutput(sample=dict, latent=Tensor)
+predicted, u_pred = out            # tuple unpacking still works (legacy)
+
+# Decode only what you need:
+image_only = model.decode(out.latent, requested=("image",))
+```
+
+### Ablations and experimental scripts
+
+The full set of training / ablation / diagnostic scripts lives in
+`scripts/ablations/`. Each is self-contained and runs from any cwd
+once `pip install -e .` has been done:
 
 ```bash
-# Gate 0: verify encode/decode identity + denoiser stability
-py -3.13 run_gate0_verify.py --epochs 400
-
-# DDPM training + DDIM sampling (unconditional)
-py -3.13 run_diffusion_train.py \
-    --epochs 1000 --diffusion-steps 200 --ddim-steps 50 --n-samples 6
-
-# Outputs land in generated/diffusion/sample_*/
+py -3.13 scripts/ablations/run_diffusion_train.py --help
+py -3.13 scripts/ablations/run_gate0_verify.py --help
+py -3.13 scripts/ablations/run_msn_diagnostic.py --help
+# ...19 entry points total
 ```
 
 ### Save / load (HF-compatible layout)
@@ -144,8 +183,10 @@ image_only = model.decode(out.latent, requested=("image",))
 
 ```
 vod/
+├── pyproject.toml                # Phase 1: pip install -e . + pytest config
+├── requirements.txt              # Loose pin (numpy / torch / safetensors / Pillow)
 ├── prototype/
-│   ├── vod_minimal/              # Core package
+│   ├── vod_minimal/              # Core package (current import name; renamed in Phase 2)
 │   │   ├── native.py             # NativeVOD substrate (encode/decode/denoise)
 │   │   ├── denoisers.py          # UNet (default) + pointwise MLP (legacy)
 │   │   ├── diffusion.py          # DDPM schedule + DDIM sampler
@@ -153,18 +194,19 @@ vod/
 │   │   ├── binary_twin.py        # Binary-Twin symbol coupling loss
 │   │   ├── aimp.py               # TPSR / AIMP physical consistency
 │   │   └── ...
-│   ├── tests/                    # pytest suite (32 tests)
-│   ├── run_*.py                  # Training / evaluation entry points
+│   ├── tests/                    # pytest suite (235 tests)
 │   ├── STATE_DICT_KEYS.md        # Frozen parameter naming contract
 │   ├── model_index.json          # HF Diffusers manifest draft
 │   └── modular_model_index.json  # Modular Diffusers manifest draft
+├── scripts/
+│   ├── sample.py                 # Phase 1: minimal round-trip CLI
+│   └── ablations/                # 19 training / ablation / diagnostic scripts
 ├── docs/
 │   ├── vod_full_mathematical_formulation.md
-│   ├── vod_hf_compatibility_plan.md
+│   ├── vod_hf_compatibility_plan.md   # Phase 1/2/3 plan
 │   ├── hf_modular_mapping.md
 │   ├── vod_chladni_model.md
 │   └── ...
-├── scripts/                      # Standalone validation scripts
 ├── opu/                          # Operator policies (resource control)
 ├── LICENSE                       # Apache 2.0
 └── README.md
@@ -174,19 +216,26 @@ vod/
 
 ## Roadmap
 
+Engineering Phases (interface + repo layout, planned together):
+
 | Phase | Scope | Status |
 |---|---|---|
-| **Gate 0** | encode/decode identity + denoiser no-op | done |
-| **DDPM/DDIM** | unconditional generation pipeline | done |
-| **Phase A** | HF shadow contract: config.json, save/from_pretrained, state_dict key contract, output dataclass, dtype audit | done |
-| **Sample fidelity** | crisp Chladni unconditional samples (current focus) | in progress |
-| **Scaling** | hidden ≥ 128, train set ≥ 1k, 32×32 / 64×64 latent | pending |
-| **Conditional generation** | text / class label / image conditioning hook | pending |
-| **Phase B** | HF Spaces demo + model card + optional `PyTorchModelHubMixin` | gated by sample fidelity |
-| **Phase C** | `ModularPipelineBlocks` wrapper + layerwise casting / offload hooks | gated by Phase B |
+| **Phase 1** — Now | 1A: HF shadow contract (config.json, save/from_pretrained, state_dict key contract, output dataclass, dtype audit). 1B: pyproject.toml, requirements.txt, scripts/sample.py, scripts/ablations/ collection. | done |
+| **Phase 2** — After sample fidelity | 2A: HF Spaces demo + model card + optional `PyTorchModelHubMixin`. 2B: introduce `vod/` public package with `vod_minimal` compatibility shim. | gated by sample fidelity |
+| **Phase 3** — HF Hub / Diffusers integration | 3A: `ModularPipelineBlocks` wrapper + `ModelMixin`/`SchedulerMixin` + layerwise casting / offload hooks. 3B: deep modularisation (`vod/{models,fields,projections,constraints,sampling,io}/`). | gated by Phase 2 |
+
+Research milestones (quality gates, not engineering Phases):
+
+| Milestone | Status |
+|---|---|
+| Gate 0 — encode/decode identity + denoiser no-op | done |
+| DDPM/DDIM — unconditional generation pipeline | done |
+| **Unconditional sample fidelity** — crisp Chladni samples | **active focus** |
+| Scaling — hidden ≥ 128, train set ≥ 1k, 32×32 / 64×64 latent | pending |
+| Conditional generation — text / class label / image conditioning hook | pending |
 
 See [`docs/vod_hf_compatibility_plan.md`](docs/vod_hf_compatibility_plan.md)
-for the full plan.
+for the full Phase 1/2/3 plan and design decisions.
 
 ---
 

@@ -38,6 +38,7 @@ from vod_minimal.schema import canonical_metrics, checkpoint_payload
 
 
 PROTOTYPE_ROOT = Path(__file__).resolve().parent.parent
+ABLATIONS_ROOT = PROTOTYPE_ROOT.parent / "scripts" / "ablations"
 
 
 # --------------------------------------------------------------------------- #
@@ -273,7 +274,7 @@ class TestTrainCLISmoke:
         # Use --help so the smoke is sub-second and never trains anything.
         del extra  # only needed for parameter id
         out = subprocess.run(
-            [sys.executable, str(PROTOTYPE_ROOT / script), "--help"],
+            [sys.executable, str(ABLATIONS_ROOT / script), "--help"],
             capture_output=True,
             text=True,
             encoding="utf-8",

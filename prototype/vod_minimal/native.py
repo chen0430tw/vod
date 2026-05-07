@@ -532,7 +532,7 @@ class NativeVOD(nn.Module):
         """Load a NativeVOD saved by `save_pretrained`.
 
         Only supports local directories. Hub download is delegated to a
-        future PyTorchModelHubMixin wrapper (Phase B / C).
+        future PyTorchModelHubMixin wrapper (Phase 2 / 3).
         """
         d = Path(pretrained_model_name_or_path)
         if not d.is_dir():

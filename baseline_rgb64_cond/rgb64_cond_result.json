@@ -1,0 +1,328 @@
+{
+  "date": "2026-05-07T08:39:39.052228",
+  "version": "rgb64-cond: Stage-2 class conditioning on CIFAR-10 RGB 64\u00d764",
+  "device": "cuda",
+  "train_args": {
+    "seed": 430,
+    "dataset": "cifar10",
+    "data_dir": "D:/VOD/data/real_images",
+    "data_cache_dir": null,
+    "image_size": 64,
+    "train_n": 1024,
+    "epochs": 1500,
+    "lr": 0.0001,
+    "weight_decay": 0.001,
+    "cosine_eta_floor": 0.1,
+    "ema_decay": 0.999,
+    "use_fixed_scaling": true,
+    "scale_fit_n": 512,
+    "zero_terminal_snr": true,
+    "w_weak": 0.0,
+    "use_field_lift": true,
+    "diffusion_steps": 200,
+    "time_dim": 64,
+    "hidden": 128,
+    "channels": 8,
+    "n_samples": 8,
+    "num_classes": 10,
+    "p_drop_cond": 0.1,
+    "samples_per_class": 4,
+    "w_recon": 1.0,
+    "cpu": false,
+    "out": "generated/rgb64_cond",
+    "report_out": "prototype/rgb64_cond_result.json",
+    "md_out": "prototype/rgb64_cond_report.md",
+    "prediction": "v",
+    "lr_schedule": "cosine",
+    "amp": true,
+    "minibatch_size": 32,
+    "checkpoint_dir": "runs/rgb64_cond_ckpt",
+    "checkpoint_every": 200,
+    "resume": null,
+    "rss_every_ep": 25,
+    "gc_every_ep": 0,
+    "pin_dataset": false
+  },
+  "sampler": {
+    "type": "DDIM",
+    "prediction": "x_0",
+    "eta": 0.0,
+    "num_steps": 50,
+    "schedule_steps": 200
+  },
+  "latent_stats": {
+    "mean": 0.0,
+    "std": 1.0
+  },
+  "metrics": {
+    "per_source": {
+      "train_reference": {
+        "descriptor_mean": {
+          "amplitude": 0.48696923598740416,
+          "phase": -0.36860321927734774,
+          "frequency": 0.08466593424479166,
+          "compression": 0.09197351824743831,
+          "salience": 0.09404263460007556,
+          "snr": 9.80223386838215
+        },
+        "amplitude_range": 1.9921568632125854,
+        "entropy_mean": 5.071398906950027,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      "trained_sample": {
+        "descriptor_mean": {
+          "amplitude": 0.13458223702592118,
+          "phase": -0.7222596474183406,
+          "frequency": 0.3333333333333333,
+          "compression": 0.14113522548480978,
+          "salience": 0.029302200704637002,
+          "snr": 6.803632721067526
+        },
+        "amplitude_range": 0.6925414502620697,
+        "entropy_mean": 4.796727558857668,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      "untrained_sample": {
+        "descriptor_mean": {
+          "amplitude": 0.08410571057275794,
+          "phase": -2.4938904638113772,
+          "frequency": 0.3333333333333333,
+          "compression": 0.07930820301830034,
+          "salience": 0.07395822288157407,
+          "snr": 0.04448403185935895
+        },
+        "amplitude_range": 0.43010374903678894,
+        "entropy_mean": 5.142029160864368,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      "random_noise_baseline": {
+        "descriptor_mean": {
+          "amplitude": 0.7879336622998371,
+          "phase": 0.24690208935092484,
+          "frequency": 0.3642171223958333,
+          "compression": 0.18044824999797585,
+          "salience": 0.8172627326927189,
+          "snr": 0.2510277181867905
+        },
+        "amplitude_range": 7.519312381744385,
+        "entropy_mean": 4.577165791161704,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      "zero_baseline": {
+        "descriptor_mean": {
+          "amplitude": 0.03983076519747152,
+          "phase": -1.405197778180469,
+          "frequency": 0.3333333333333333,
+          "compression": 0.7162089270041656,
+          "salience": 0.01976720554133256,
+          "snr": 0.8247750685718874
+        },
+        "amplitude_range": 0.08751314133405685,
+        "entropy_mean": 1.584962500721156,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      "gate0_recon": {
+        "descriptor_mean": {
+          "amplitude": 0.4861401127870397,
+          "phase": -0.36875480715394493,
+          "frequency": 0.08466593424479166,
+          "compression": 0.08977715206443272,
+          "salience": 0.09387555543050467,
+          "snr": 9.805664287987153
+        },
+        "amplitude_range": 2.0030792355537415,
+        "entropy_mean": 5.083560932275836,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      }
+    },
+    "descriptor_distance_to_train": {
+      "train_reference": 0.0,
+      "trained_sample": 3.051114874842969,
+      "untrained_sample": 9.997761051016498,
+      "random_noise_baseline": 9.607496513120623,
+      "zero_baseline": 9.07338138480774,
+      "gate0_recon": 0.004162948797530166
+    },
+    "stability": {
+      "per_seed_distances": {
+        "trained_seed_530": 4.321894511913088,
+        "trained_seed_630": 2.329823702665185,
+        "trained_seed_730": 2.15729998820368
+      },
+      "std_across_seeds": 0.9822638247765523
+    }
+  },
+  "verdict": "PASS",
+  "passes": {
+    "finite_ratio == 1.0": true,
+    "amplitude_range > 0.05": true,
+    "beats random_noise baseline": true,
+    "beats zero baseline": true,
+    "beats untrained_sample": true
+  },
+  "stage2_cond": {
+    "per_class_metrics": [
+      {
+        "descriptor_mean": {
+          "amplitude": 0.1756229903387904,
+          "phase": -1.4674066741527976,
+          "frequency": 8.138020833333333e-05,
+          "compression": 0.08045912474156275,
+          "salience": 0.026578067796111993,
+          "snr": 8.794158967107911
+        },
+        "amplitude_range": 0.8145012408494949,
+        "entropy_mean": 5.135601306198683,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      {
+        "descriptor_mean": {
+          "amplitude": 0.14188535183956114,
+          "phase": -0.6068857601192161,
+          "frequency": 0.2500203450520833,
+          "compression": 0.13849006332542912,
+          "salience": 0.02749493535463081,
+          "snr": 7.442378978888748
+        },
+        "amplitude_range": 0.7140538543462753,
+        "entropy_mean": 4.811500690326136,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      {
+        "descriptor_mean": {
+          "amplitude": 0.15206497303209304,
+          "phase": -0.7536323547876291,
+          "frequency": 0.3333333333333333,
+          "compression": 0.148961248528365,
+          "salience": 0.029277364557718986,
+          "snr": 8.142539089549764
+        },
+        "amplitude_range": 0.6208871454000473,
+        "entropy_mean": 4.753019513629633,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      {
+        "descriptor_mean": {
+          "amplitude": 0.1687543298064609,
+          "phase": -0.6367464272380339,
+          "frequency": 0.3333333333333333,
+          "compression": 0.12912380104142016,
+          "salience": 0.03930304273697963,
+          "snr": 6.236070253480878
+        },
+        "amplitude_range": 0.8720598965883255,
+        "entropy_mean": 4.863810913954246,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      {
+        "descriptor_mean": {
+          "amplitude": 0.18104016482338747,
+          "phase": -0.6933820399016061,
+          "frequency": 0.3333333333333333,
+          "compression": 0.13565625571594966,
+          "salience": 0.040115176008410955,
+          "snr": 6.36411029262129
+        },
+        "amplitude_range": 0.9052505195140839,
+        "entropy_mean": 4.827327399559337,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      {
+        "descriptor_mean": {
+          "amplitude": 0.16052471291256806,
+          "phase": -0.7754934538046538,
+          "frequency": 0.3333333333333333,
+          "compression": 0.14709546424004133,
+          "salience": 0.036622295491488085,
+          "snr": 6.1549055640188435
+        },
+        "amplitude_range": 0.776962548494339,
+        "entropy_mean": 4.763439848914356,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      {
+        "descriptor_mean": {
+          "amplitude": 0.1861623230446242,
+          "phase": -0.761941804291667,
+          "frequency": 0.3333333333333333,
+          "compression": 0.11952289515508888,
+          "salience": 0.04402096440852235,
+          "snr": 6.260729083271574
+        },
+        "amplitude_range": 0.6959515511989594,
+        "entropy_mean": 4.917431613302359,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      {
+        "descriptor_mean": {
+          "amplitude": 0.13190963237806672,
+          "phase": -0.5893566792291909,
+          "frequency": 8.138020833333333e-05,
+          "compression": 0.1394320429507708,
+          "salience": 0.030642710409462367,
+          "snr": 6.534983258416235
+        },
+        "amplitude_range": 0.8097427785396576,
+        "entropy_mean": 4.8062397694421595,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      {
+        "descriptor_mean": {
+          "amplitude": 0.18435503806900957,
+          "phase": -1.563933202013849,
+          "frequency": 8.138020833333333e-05,
+          "compression": 0.0917980958324989,
+          "salience": 0.03230510075224446,
+          "snr": 7.510981268385662
+        },
+        "amplitude_range": 0.9304384291172028,
+        "entropy_mean": 5.072273577859042,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      },
+      {
+        "descriptor_mean": {
+          "amplitude": 0.1460455777880563,
+          "phase": -1.0941396832624186,
+          "frequency": 8.138020833333333e-05,
+          "compression": 0.11986878348328356,
+          "salience": 0.022352657184467335,
+          "snr": 8.919522946976098
+        },
+        "amplitude_range": 0.883176326751709,
+        "entropy_mean": 4.9154998399599545,
+        "tile_residue_mean": 0.0,
+        "finite_ratio": 1.0
+      }
+    ],
+    "same_class_descriptor_distance": 1.4932117550335986,
+    "random_class_descriptor_distance": 2.7979257568654075,
+    "cond_vs_random_pixel_mse": 0.05521582439541817,
+    "stage2_class_list": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ]
+  }
+}
