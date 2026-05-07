@@ -28,17 +28,32 @@ diffusion architecture: a single shared entropy field
 This contrasts with type C designs (Sora, LPM 1.0) that route each
 modality through independent encoders into a shared backbone.
 
-**Status: toy scale (~524K parameters, 16×16 latent).** Gate 0
-(encode/decode identity + denoiser stability) passed; unconditional
-DDIM sampling produces structured outputs but is not yet
-publication-quality. Architecture and interface contracts are
-documented to support future scaling and HF/Diffusers integration
-without breaking changes.
+**Status: three baselines PASS, paper-grade scale (8.4M parameters).**
+
+* **v16 Chladni 16×16 grayscale** — synthetic substrate baseline,
+  `descriptor_distance(trained, ref)=0.43` vs untrained 6.93,
+  PASS 5/5 (paper §5).
+* **Stage 1 RGB 64×64** — real CIFAR-10 RGB with learned Conv2d
+  projection head, Gate-0 reconstruction pixel-level visually
+  identical to reference, trained-vs-untrained gap 6.0 (paper §6).
+* **Stage 2 class conditioning** — additive class embedding on the
+  time-emb path, same-noise ablation MSE 0.055 confirms cond is
+  honored, Gate-0 better than Stage 1 unconditional (paper §7).
+
+The substrate `U(t,y,x,c)` is unchanged across all three settings —
+only the modality projection heads differ. Stage 3 (object-level
+ImageNet-100 + CFG sweep + partial masking + requested-extent API)
+is the next milestone (see Roadmap).
 
 ---
 
 ## News
 
+- **2026-05-07** — Stage 1 (RGB 64×64) and Stage 2 (CIFAR-10 class
+  conditioning) both PASS. Paper draft updated to 9 sections covering
+  v16 / Stage 1 / Stage 2. Stage 3 redefined per
+  [`docs/omni_diffusion_lessons_for_vod.md`](docs/omni_diffusion_lessons_for_vod.md):
+  ImageNet-100 object-level + CFG sweep + partial masking + requested-extent API.
 - **2026-05-05** — Phase 1 complete. Repo layout aligned to standard
   open-source ML format: `pyproject.toml` + `requirements.txt`,
   `scripts/sample.py` minimal CLI, 19 ablation entry points moved to
@@ -228,11 +243,32 @@ Research milestones (quality gates, not engineering Phases):
 
 | Milestone | Status |
 |---|---|
-| Gate 0 — encode/decode identity + denoiser no-op | done |
-| DDPM/DDIM — unconditional generation pipeline | done |
-| **Unconditional sample fidelity** — crisp Chladni samples | **active focus** |
-| Scaling — hidden ≥ 128, train set ≥ 1k, 32×32 / 64×64 latent | pending |
-| Conditional generation — text / class label / image conditioning hook | pending |
+| Gate 0 — encode/decode identity + denoiser no-op | **done** |
+| DDPM/DDIM — unconditional generation pipeline | **done** |
+| Unconditional sample fidelity — crisp Chladni samples (v16) | **done** (PASS 5/5) |
+| Scaling — hidden ≥ 128, 1024+ train, 32-64 spatial | **done** (Stage 1) |
+| Real-image transfer — RGB 64×64 unconditional (Stage 1) | **done** (PASS 5/5) |
+| Conditional generation — class label additive embedding (Stage 2) | **done** (PASS, cond_effect MSE 0.055) |
+| **Stage 3 — ImageNet-100 + controlled field generation** | **active focus** |
+
+**Stage 3 sub-milestones** (per [`docs/omni_diffusion_lessons_for_vod.md`](docs/omni_diffusion_lessons_for_vod.md)):
+
+| sub-step | scope | budget (RunPod B200×8) |
+|----------|-------|------------------------|
+| **3A** | ImageNet-100 object-level RGB unconditional | ~3h |
+| **3B** | CFG sweep `s ∈ {0, 1, 2, 4, 7.5}` on Stage-2 conditioner | ~1h |
+| **3C** | Partial field masking smoke (RePaint-style image inpainting) | ~30 min |
+| **3D** | Requested-extent API (`T=1` image, `T=8` short video, selective decoder dispatch) | ~30 min |
+
+3A is the gating step. 3B/C/D run only if 3A passes object-level
+visual standard (third-party can identify class from sample without
+being told). Total Stage 3 budget: one weekend GPU compute + paper-
+grade review.
+
+Lessons borrowed from [Omni-Diffusion](https://arxiv.org/abs/2603.06577)
+(VITA-MLLM 2026) — concept-level only, no MAGVIT-v2 / Dream-7B /
+discrete tokenizer imports. See the lessons doc above for the
+hard-rule list of what does **not** enter VOD.
 
 See [`docs/vod_hf_compatibility_plan.md`](docs/vod_hf_compatibility_plan.md)
 for the full Phase 1/2/3 plan and design decisions.

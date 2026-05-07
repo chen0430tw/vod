@@ -294,21 +294,30 @@ Phase 1 / 1A 优先级排序就是按这两条致命点设计的。其他项（s
 ## 7. 实施顺序与触发条件
 
 ```
-[Phase 1: 1A 接口护栏 9 项 + 1B repo layout 6 项] ── 现在做
+[Phase 1: 1A 接口护栏 9 项 + 1B repo layout 6 项] ── ✅ DONE 2026-05-05
         │
         ▼
-[主线: unconditional sample fidelity] ── 当前阻塞点（研究里程碑，非 Phase）
+[研究里程碑: unconditional sample fidelity] ── ✅ DONE
+  ├─ v16 Chladni 16×16 grayscale (PASS 5/5)               ✅
+  ├─ Stage 1 RGB 64×64 unconditional (PASS 5/5)            ✅
+  └─ Stage 2 class conditioning (PASS, cond_effect 0.055)  ✅
         │
-        ├─► [Phase 2: 2A HF Spaces demo + 2B 包名迁移 vod/] ── sample 能见人后
+        ▼
+[研究里程碑: Stage 3 ImageNet-100 + controlled field generation] ── 当前焦点
+  ├─ 3A: ImageNet-100 object-level RGB unconditional       (next, ~3h B200×8)
+  ├─ 3B: CFG sweep s∈{0,1,2,4,7.5}                         (gated by 3A)
+  ├─ 3C: Partial field masking (RePaint-style inpainting)  (gated by 3A)
+  └─ 3D: Requested extent API (T=1 image, T=8 video)       (gated by 3A)
+        │
+        ├─► [Phase 2: 2A HF Spaces demo + 2B 包名迁移 vod/] ── 由 Stage 3A object-level 通过触发
         │         │
         │         ▼
-        └─► [conditional generation: text/class] ── scale 验证后（研究里程碑）
-                  │
-                  ▼
-            [Phase 3: 3A Modular Diffusers wrapper + 3B 模块化深拆] ── 真要上 Hub 时
+        └─► [Phase 3: 3A Modular Diffusers wrapper + 3B 模块化深拆] ── 真要上 Hub 时
 ```
 
-**Phase 1 与主线研究并行，互不阻塞**。Phase 2/3 由 sample quality 触发，不由日历触发。研究里程碑（sample fidelity / scaling / conditional generation）不是 Phase。
+**Phase 1 与主线研究并行，互不阻塞**。Phase 2/3 由 sample quality 触发，不由日历触发。研究里程碑现已经多档 PASS：v16 / Stage 1 / Stage 2，下一档 Stage 3。
+
+**Stage 3 设计依据**：[`docs/omni_diffusion_lessons_for_vod.md`](omni_diffusion_lessons_for_vod.md) — 借鉴 Omni-Diffusion (VITA-MLLM 2026, ICLR 2025) 的 progressive curriculum / requested extent / partial masking / CFG sweep / uncertainty signals / position-penalty-style artifact control。**不抄** MAGVIT-v2 / Dream-7B / discrete tokenizer。VOD 仍是 type-B continuous-substrate，不转向 discrete-token unification。
 
 ---
 

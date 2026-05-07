@@ -266,33 +266,49 @@ just a working toy.
 
 ---
 
-## 5. One next step (per your §5 minimum)
+## 5. Stage 3 (revised after Omni-Diffusion review, 2026-05-07)
 
-**Substrate-self-stratified ImageNet-100 anchor** (RunPod B200 ×8,
-estimated 2–3 hours):
+### 5.1 Original §5 (substrate-self-stratified ImageNet-100 anchor)
 
-1. Use v16 ckpt (or Stage 1 RGB ckpt) as a frozen feature extractor.
-2. Embed ImageNet candidate images → 8-channel substrate latent.
-3. K-means cluster (1000 clusters in latent space).
-4. Stratified sample 100–300 per cluster → 100K–300K curated subset.
-5. Train Stage-1-style RGB substrate on this curated set.
+The single-next-step originally proposed was: use v16 ckpt as feature
+extractor → K-means stratified ImageNet-100 subset → Stage-1-style
+training. **This is now Stage 3A** (the gating sub-step), no longer
+the entire Stage 3.
 
-Why this is the *single* most informative next step:
+### 5.2 Revised Stage 3: four sub-steps (informed by Omni-Diffusion)
 
-* It directly tests the type-B paper's strongest implicit claim:
-  the substrate is its own dataset curator. LDM-style architectures
-  cannot do this trivially because their VAE is not jointly trained
-  with the diffusion.
-* Mirrors the **HLBD anchor + dilution** quickcook strategy that
-  user has already production-validated for APT-Transformer NLP.
-* Closes the "object-level conditioning" gap from §4.5 by giving
-  the substrate enough data + scale; if it still produces only
-  color-tones, the architectural ceiling is real (paper-relevant).
-* Compute budget bounded: B200 ×8 × 3h = $120 ballpark, weekend job.
+After reading [Omni-Diffusion (VITA-MLLM, March 2026, ICLR 2025)](https://arxiv.org/abs/2603.06577)
+— a discrete-token mask-diffusion sibling architecture — we identified
+six concept-level lessons that port cleanly to VOD's continuous
+substrate (without importing tokenizers / Dream-7B / discrete vocab).
+See [`docs/omni_diffusion_lessons_for_vod.md`](omni_diffusion_lessons_for_vod.md)
+for the full mapping. Stage 3 is now four sub-steps:
 
-We do **not** propose: text conditioning, multimodal joint training,
-EDM-baseline comparison, or v17/v18 architecture iterations. Those
-all wait until the ImageNet-stratified result is on the table.
+| sub-step | scope | budget (B200×8) | gate |
+|----------|-------|-----------------|------|
+| **3A** ImageNet-100 object-level RGB | substrate-self-stratified subset, Stage-1 conv head, scale to 100M params if needed | ~3h | trained_sample shows object-level structure (third-party identifies class without label); not just color blobs |
+| **3B** CFG sweep | guidance scale `s ∈ {0, 1, 2, 4, 7.5}` on Stage-2-style class conditioner | ~1h | monotone trend in cond effect; no collapse at s ≤ 4 |
+| **3C** Partial field masking smoke | RePaint-style sampling-loop change for image inpainting | ~30 min | known region preserved (MSE < 0.05); unknown plausible; clean boundary |
+| **3D** Requested extent API smoke | `T=1` image, `T=8` short video, selective decoder dispatch | ~30 min | shape contracts hold; only requested decoder invoked |
+
+**3A is the gate.** 3B/C/D run only if 3A produces object-level
+samples. If 3A still gives color-blobs at this scale, that's an
+architectural ceiling signal — not a "more data" problem.
+
+### 5.3 What Stage 3 explicitly does NOT do
+
+Per the Omni-Diffusion lessons hard-rule list:
+
+* No external tokenizer (MAGVIT-v2, speech codec, etc).
+* No Dream-7B / token-LLM backbone substitution.
+* No discrete-vocabulary substrate.
+* No text conditioning, no multi-modal joint training, no EDM-baseline
+  comparison, no v17/v18 architecture iteration. Those wait until
+  Stage 3 is in.
+
+VOD remains a continuous-substrate type-B model. Stage 3 exercises
+the inference / conditioning / masking surface at object scale; it
+does not redefine the substrate.
 
 ---
 
