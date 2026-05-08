@@ -1,0 +1,31 @@
+{
+  "version": "curriculum.v1",
+  "total_steps": 60000,
+  "schedule": [
+    {
+      "step": 0,
+      "anchor_prob": 1.0,
+      "dataset_prob": 0.0,
+      "label": "Phase A: 100% anchor (planting prior)"
+    },
+    {
+      "step": 5000,
+      "anchor_prob": 0.5,
+      "dataset_prob": 0.5,
+      "label": "Phase B: 50/50 anchor + dataset"
+    },
+    {
+      "step": 20000,
+      "anchor_prob": 0.1,
+      "dataset_prob": 0.9,
+      "label": "Phase C: 10% anchor gravity + 90% dataset"
+    },
+    {
+      "step": 51000,
+      "anchor_prob": 0.05,
+      "dataset_prob": 0.95,
+      "label": "Late: 5% anchor gravity, mostly dataset"
+    }
+  ],
+  "notes": "Trainer picks the highest-step entry whose step <= current_step. anchor_prob is the probability that any minibatch sample comes from HVBD cells; dataset_prob is the probability it comes from real dataset (CIFAR/ImageNet/etc.). Anchor_prob + dataset_prob = 1."
+}

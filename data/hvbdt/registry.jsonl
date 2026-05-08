@@ -1,0 +1,12 @@
+{"filename": "HVBDT_core_motion_primitives.png", "exists": true, "size_px": [1254, 1254], "mode": "RGB", "expected_rows": 10, "expected_cols": 12, "expected_cells": 120, "level_id": "core_motion_primitives"}
+{"filename": "HVBDT_core_dynamic_textures.png", "exists": false, "expected_rows": 12, "expected_cols": 12, "expected_cells": 144, "level_id": "core_dynamic_textures"}
+{"filename": "HVBDT_core_camera_motion.png", "exists": false, "expected_rows": 12, "expected_cols": 12, "expected_cells": 144, "level_id": "core_camera_motion"}
+{"filename": "HVBDT_anime_frame_strips.png", "exists": false, "expected_rows": 12, "expected_cols": 12, "expected_cells": 144, "level_id": "anime_frame_strips"}
+{"filename": "HVBDT_anime_timing_principles.png", "exists": false, "expected_rows": 12, "expected_cols": 12, "expected_cells": 144, "level_id": "anime_timing_principles"}
+{"filename": "HVBDT_anime_character_consistency.png", "exists": false, "expected_rows": 6, "expected_cols": 12, "expected_cells": 72, "level_id": "anime_character_consistency"}
+{"filename": "HVBDT_anime_production_pipeline.png", "exists": false, "expected_rows": 8, "expected_cols": 12, "expected_cells": 96, "level_id": "anime_production_pipeline"}
+{"filename": "HVBDT_control_keyframe_interpolation.png", "exists": false, "expected_rows": 6, "expected_cols": 3, "expected_cells": 18, "level_id": "control_keyframe_interpolation"}
+{"filename": "HVBDT_control_pose_depth_lineart.png", "exists": false, "expected_rows": 6, "expected_cols": 12, "expected_cells": 72, "level_id": "control_pose_depth_lineart"}
+{"filename": "HVBDT_control_audio_mouth_face.png", "exists": false, "expected_rows": 8, "expected_cols": 12, "expected_cells": 96, "level_id": "control_audio_mouth_face"}
+{"filename": "HVBDT_benchmark_motion_categories.png", "exists": false, "expected_rows": null, "expected_cols": null, "expected_cells": null, "level_id": "benchmark_motion_categories"}
+{"filename": "HVBDT_benchmark_consistency_quality.png", "exists": false, "expected_rows": null, "expected_cols": null, "expected_cells": null, "level_id": "benchmark_consistency_quality"}

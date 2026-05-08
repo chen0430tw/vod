@@ -1,0 +1,45 @@
+# Type-A LDM baseline (modality-private VAE) on the same data + HVBD split
+# sub-anchors. For VOD vs LDM compute economics (guide §7.3).
+#
+# This is NOT pretrained Stable Diffusion. We train a scratch LDM on
+# the same data budget VOD uses, with 16 per-domain VAEs from the
+# HVBD sub-anchor split (HVBD_anchor_core_v1 → 16 column-PNGs each
+# representing one visual domain). 16× compute inflation is the
+# whole point — controlled experiment.
+experiment_name: ldm_baseline_per_domain
+model:
+  arch: SmallLDM
+  vae:
+    channels: 4
+    spatial_downsample: 8
+    per_domain: true            # 16 VAEs, one per HVBD domain column
+    n_domains: 16
+  unet:
+    hidden: 128
+    param_target: 100_000_000   # match VOD-100M for fair compute compare
+data:
+  source: per_domain_split
+  primary: imagenet100
+  image_size: 64
+  train_n: 130_000
+  hvbd_subanchor_dir: data/hvbd_static/cells/anchor_core_v1
+  per_domain_vae_split: true
+training:
+  vae_steps: 30000              # per-VAE (× 16 = 480000 total VAE steps)
+  diffusion_steps: 60000
+  minibatch: 32
+  lr_vae: 1e-4
+  lr_diff: 1e-4
+  amp: true
+sampling:
+  diffusion_steps: 200
+  ddim_steps: 50
+  n_samples: 16
+  domain_routing: required      # cannot generate cross-domain natively
+output:
+  ckpt_dir: experiments/ldm_vs_vod/ldm_baseline/ckpt
+  generated_dir: experiments/ldm_vs_vod/ldm_baseline/generated
+  report_path: experiments/ldm_vs_vod/ldm_baseline/report.md
+notes:
+  - "Total LDM compute = 16 VAEs × VAE-steps + 1 UNet × diffusion-steps."
+  - "Compare against VOD: 1 substrate × diffusion-steps. Type-B advantage."

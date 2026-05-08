@@ -1,0 +1,40 @@
+# VOD-T-300M video-end smoke (guide §7.5).
+# Frame strip from HVBDT_core_motion_primitives — substrate sees
+# each row (motion atom) as a T=12 sequence.
+experiment_name: vodt_300m_motion_primitives
+model:
+  arch: NativeVOD
+  channels: 8
+  hidden: 384
+  time_dim: 96
+  backbone: unet
+  param_target: 300_000_000
+  rgb_head: true
+  T_frames: 12              # motion strip length per HVBDT row
+data:
+  source: hvbdt_motion_strips
+  hvbdt_sheet: data/hvbdt/sheets/HVBDT_core_motion_primitives.png
+  rows: 10                  # 10 motion atoms in this sheet
+  cols: 12                  # 12 frames per row
+  image_size: 64
+training:
+  total_steps: 30000
+  minibatch: 16
+  lr: 1e-4
+  weight_decay: 1e-3
+  cosine_eta_floor: 0.1
+  ema_decay: 0.999
+  prediction: v
+  zero_terminal_snr: true
+  amp: true
+  checkpoint_every: 500
+  rss_every_ep: 50
+sampling:
+  diffusion_steps: 200
+  ddim_steps: 50
+  T_frames: 12
+  n_samples: 8
+output:
+  ckpt_dir: experiments/vodt_motion_primitives/vodt_300m/ckpt
+  generated_dir: experiments/vodt_motion_primitives/vodt_300m/generated
+  report_path: experiments/vodt_motion_primitives/vodt_300m/report.md

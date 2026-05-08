@@ -1,0 +1,41 @@
+# VOD-100M with HVBD anchor + dilution curriculum.
+# Per guide §7.2 first B200 run #2.
+experiment_name: vod_100m_hvbd
+model:
+  arch: NativeVOD
+  channels: 8
+  hidden: 256
+  time_dim: 64
+  backbone: unet
+  param_target: 100_000_000
+  rgb_head: true
+data:
+  source: anchor_plus_dilution
+  primary: cifar10
+  image_size: 64
+  train_n: 50000
+  use_anchor: true
+  anchor_cells_dir: data/hvbd_static/cells/anchor_core_v1
+  curriculum_path: configs/curriculum_default.json
+training:
+  total_steps: 60000
+  minibatch: 64
+  lr: 1e-4
+  weight_decay: 1e-3
+  cosine_eta_floor: 0.1
+  ema_decay: 0.999
+  prediction: v
+  zero_terminal_snr: true
+  scale_fit_n: 1024
+  amp: true
+  checkpoint_every: 1000
+  rss_every_ep: 100
+sampling:
+  diffusion_steps: 200
+  ddim_steps: 50
+  n_samples: 16
+  cfg_scale: 0
+output:
+  ckpt_dir: experiments/static_anchor_ablation/vod_100m_hvbd/ckpt
+  generated_dir: experiments/static_anchor_ablation/vod_100m_hvbd/generated
+  report_path: experiments/static_anchor_ablation/vod_100m_hvbd/report.md

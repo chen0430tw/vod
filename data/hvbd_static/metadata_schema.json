@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "HVBD cell metadata schema",
+  "description": "Per-cell record for split HVBD images. One JSONL line per cell.",
+  "type": "object",
+  "required": [
+    "cell_id", "source_png", "level", "domain", "row", "col",
+    "cell_pixel_bbox", "saved_to"
+  ],
+  "properties": {
+    "cell_id": {
+      "type": "string",
+      "description": "Stable identifier: e.g. HVBD_anchor_core_v1__r03_c12_face"
+    },
+    "source_png": {
+      "type": "string",
+      "description": "Relative path to the source HVBD master PNG"
+    },
+    "level": {
+      "type": "string",
+      "enum": [
+        "anchor_core",
+        "L1_primitives", "L2_textures_patterns", "L3_geometry_spectrum",
+        "L4_sketch_edges", "L5_grayscale_depth_channels",
+        "L6_rgb_natural_domains",
+        "L7_multiview_variants", "L8_multistyle_multimedia"
+      ]
+    },
+    "domain": {
+      "type": "string",
+      "description": "Visual domain label (face/animal/vehicle/.../gradient)"
+    },
+    "row": {"type": "integer", "minimum": 0},
+    "col": {"type": "integer", "minimum": 0},
+    "cell_pixel_bbox": {
+      "type": "array",
+      "items": {"type": "integer"},
+      "minItems": 4,
+      "maxItems": 4,
+      "description": "[x_min, y_min, x_max, y_max] in source-PNG pixel coords"
+    },
+    "saved_to": {
+      "type": "string",
+      "description": "Relative path to the extracted cell PNG"
+    },
+    "variant_index": {
+      "type": "integer",
+      "description": "Optional: 0..N-1 within the domain"
+    },
+    "extra": {"type": "object", "description": "Free-form notes"}
+  }
+}

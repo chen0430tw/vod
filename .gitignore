@@ -100,3 +100,25 @@ VODprototypegenerated*
 baseline_v16/v16_ckpt.pt
 baseline_rgb64_conv/*.pt
 baseline_rgb64_cond/*.pt
+
+# ----- HVBD/HVBDT raw PNGs are paper-grade source artifacts -----
+# Cells under data/hvbd_static/cells/ are DERIVED (run split script).
+!data/hvbd_static/
+!data/hvbd_static/raw/
+!data/hvbd_static/raw/**
+!data/hvbd_static/metadata_schema.json
+!data/hvbd_static/metadata.jsonl
+!data/hvbd_static/registry.jsonl
+!data/hvbdt/
+!data/hvbdt/sheets/
+!data/hvbdt/sheets/**
+!data/hvbdt/registry.jsonl
+data/hvbd_static/cells/
+data/hvbdt/clips/
+!configs/
+!configs/*.yaml
+!configs/*.json
+!experiments/
+!experiments/**
+!reports/
+!reports/**

@@ -1,0 +1,9 @@
+{"filename": "HVBD_anchor_core_v1.png", "exists": true, "size_px": [1254, 1254], "mode": "RGB", "expected_rows": 14, "expected_cols": 16, "expected_cells": 224, "level_id": "anchor_core"}
+{"filename": "HVBD_L1_primitives.png", "exists": false, "expected_rows": 10, "expected_cols": 16, "expected_cells": 160, "level_id": "L1_primitives"}
+{"filename": "HVBD_L2_textures_patterns.png", "exists": false, "expected_rows": 14, "expected_cols": 16, "expected_cells": 224, "level_id": "L2_textures_patterns"}
+{"filename": "HVBD_L3_geometry_spectrum.png", "exists": false, "expected_rows": 14, "expected_cols": 14, "expected_cells": 196, "level_id": "L3_geometry_spectrum"}
+{"filename": "HVBD_L4_sketch_edges.png", "exists": false, "expected_rows": 14, "expected_cols": 16, "expected_cells": 224, "level_id": "L4_sketch_edges"}
+{"filename": "HVBD_L5_grayscale_depth_channels.png", "exists": false, "expected_rows": 14, "expected_cols": 16, "expected_cells": 224, "level_id": "L5_grayscale_depth_channels"}
+{"filename": "HVBD_L6_rgb_natural_domains.png", "exists": false, "expected_rows": 14, "expected_cols": 16, "expected_cells": 224, "level_id": "L6_rgb_natural_domains"}
+{"filename": "HVBD_L7_multiview_variants.png", "exists": false, "expected_rows": null, "expected_cols": null, "expected_cells": 72, "level_id": "L7_multiview_variants"}
+{"filename": "HVBD_L8_multistyle_multimedia.png", "exists": false, "expected_rows": null, "expected_cols": null, "expected_cells": 100, "level_id": "L8_multistyle_multimedia"}
